@@ -47,21 +47,23 @@ export default class MainComp extends Component {
         this.changeOutput = this.changeOutput.bind(this);
     }
 
-    componentDidMount() {
-        this.setListener();
-    }
+    a = 5;
 
-    componentDidUpdate() {
-        this.setListener();
-    }
+    // componentDidMount() {
+    //     this.setListener();
+    // }
 
-    componentWillUnmount() {
-        document.querySelector('#some-id').removeEventListener('click', this.changeOutput, { once: true });
-    }
+    // componentDidUpdate() {
+    //     this.setListener();
+    // }
 
-    setListener() {
-        document.querySelector('#some-id').addEventListener('click', this.changeOutput, { once: true });
-    }
+    // componentWillUnmount() {
+    //     document.querySelector('#some-id').removeEventListener('click', this.changeOutput, { once: true });
+    // }
+
+    // setListener() {
+    //     document.querySelector('#some-id').addEventListener('click', this.changeOutput, { once: true });
+    // }
 
     changeOutput(event) {
         this.setState({
@@ -71,7 +73,7 @@ export default class MainComp extends Component {
     }
     
     render() {
-        return (<MainDiv id="some-id">
+        return (<MainDiv id="some-id" onClick={this.changeOutput}>
             <Button>Press Me!</Button>
             <Output text={this.state.text} col={this.state.color}/>
             <OtherButton>Now Press Me!</OtherButton>
