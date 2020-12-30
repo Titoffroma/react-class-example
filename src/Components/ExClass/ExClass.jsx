@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from "react-dom";
 import styled from 'styled-components';
 import MainDiv from './MainDiv';
@@ -12,7 +12,7 @@ margin-right: 0;
 margin-left: 10px;
 `
 
-export default class MainComp extends Component {
+export default class MainComp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,7 +31,7 @@ export default class MainComp extends Component {
 
     static getDerivedStateFromProps(props, state) {
         const result = {props, state};
-        console.log('getDerivedStateFromProps', result.state.state);
+        console.log('getDerivedStateFromProps', result);
         return result;
     }
 
@@ -66,18 +66,20 @@ export default class MainComp extends Component {
 
     changeOutput(event) {
         if (event.target === document.querySelector('#delete')) {
-            // return document.querySelector('#some-id').remove();
             return ReactDOM.render(
-  <React.StrictMode>
-    <div/>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+                <React.StrictMode>
+                    <div />
+                </React.StrictMode>,
+                document.getElementById("root")
+            );
         }
-            this.setState({
-            text: getComputedStyle(event.target).borderColor,
-            color: getComputedStyle(event.target).color
-        });
+        this.setState(() => {
+            console.log('stateChange');
+            return {
+                text: getComputedStyle(event.target).borderColor,
+                    color: getComputedStyle(event.target).color
+            }
+        })
     }
     
     render() {
@@ -85,14 +87,10 @@ export default class MainComp extends Component {
         return (<MainDiv id="some-id" onClick={this.changeOutput}>
             <Button>Press Me!</Button>
             <Output color={this.state.color} text={this.state.text} />
-            <OtherButton>Now Press Me!</OtherButton>
+            <OtherButton>{this.props.children || 'Now Press Me!'}</OtherButton>
             <br />
             <Output color={this.state.color} message={this.message} style={{ width: '100%' }} />
-            <Output id="delete" message="DELETE" style={{ width: '40%' }} />
+            <Output id="delete" message="DELETE" style={{ width: '50%' }} />
         </MainDiv>);
     }
 }
-
-
-
-
