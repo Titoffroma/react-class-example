@@ -19,20 +19,40 @@ export default class MainComp extends Component {
             color: 'rgb(0, 0, 0)'
         };
         this.changeOutput = this.changeOutput.bind(this);
-        this.message = '';
-        this.count = 0;
+        this.message = 'mounted';
+        this.count = 1;
         this.check = console.log('constructor');
     }
 
     componentDidMount() {
-        this.message = 'mounted';
         console.log('componentDidMount');
     }
 
-    componentDidUpdate() {
-        this.count++;
+    static getDerivedStateFromProps(props, state) {
+        const result = {props, state};
+        console.log('getDerivedStateFromProps', result.state.state);
+        return result;
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const result = {nextProps, nextState};
+        console.log('shouldComponentUpdate', result);
+        // this.count++;
         this.message = `updated ${this.count} time${this.count === 1 ? '' : 's'}`;
-        console.log('componentDidUpdate');
+        return true;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // const result = {prevProps, prevState, snapshot}
+        this.count++;
+        // this.message = `updated ${this.count} time${this.count === 1 ? '' : 's'}`;
+        console.log('componentDidUpdate', snapshot);
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        const result = {prevProps, prevState}
+        console.log('getSnapshotBeforeUpdate', result);
+        return this.count;
     }
 
     // componentWillUnmount() {
@@ -51,13 +71,14 @@ export default class MainComp extends Component {
     }
     
     render() {
+        console.log('render');
         return (<MainDiv id="some-id" onClick={this.changeOutput}>
             <Button>Press Me!</Button>
-            <Output color={this.state.color} text={this.state.text}/>
+            <Output color={this.state.color} text={this.state.text} />
             <OtherButton>Now Press Me!</OtherButton>
-            <br/>
-            <Output color={this.state.color} message={this.message} style={{width: '100%'}}/>
-            </MainDiv>)
+            <br />
+            <Output color={this.state.color} message={this.message} style={{ width: '100%' }} />
+        </MainDiv>);
     }
 }
 
