@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from "react-dom";
 import styled from 'styled-components';
 import MainDiv from './MainDiv';
 import Button from './Button';
@@ -55,16 +56,25 @@ export default class MainComp extends Component {
         return this.count;
     }
 
-    // componentWillUnmount() {
-    //     document.querySelector('#some-id').removeEventListener('click', this.changeOutput, { once: true });
-    // }
+    componentWillUnmount() {
+        console.log('componentWillUnmount');
+    }
 
     // setListener() {
     //     document.querySelector('#some-id').addEventListener('click', this.changeOutput, { once: true });
     // }
 
     changeOutput(event) {
-        this.setState({
+        if (event.target === document.querySelector('#delete')) {
+            // return document.querySelector('#some-id').remove();
+            return ReactDOM.render(
+  <React.StrictMode>
+    <div/>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+        }
+            this.setState({
             text: getComputedStyle(event.target).borderColor,
             color: getComputedStyle(event.target).color
         });
@@ -78,6 +88,7 @@ export default class MainComp extends Component {
             <OtherButton>Now Press Me!</OtherButton>
             <br />
             <Output color={this.state.color} message={this.message} style={{ width: '100%' }} />
+            <Output id="delete" message="DELETE" style={{ width: '40%' }} />
         </MainDiv>);
     }
 }
